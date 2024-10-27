@@ -1,10 +1,11 @@
 # ml_model.py
 
 import numpy as np
-from keras.models import Sequential # type: ignore
-from keras.layers import LSTM, Dense, Dropout # type: ignore
+from tensorflow.keras.models import Sequential    # type: ignore
+from tensorflow.keras.layers import LSTM, Dense, Dropout    # type: ignore
 
-from sklearn.preprocessing import MinMaxScaler
+
+from sklearn.preprocessing import MinMaxScaler # type: ignore
 
 scaler = MinMaxScaler()
 
@@ -40,3 +41,18 @@ def predict(model, data):
     scaled_data = np.reshape(scaled_data, (scaled_data.shape[0], scaled_data.shape[1], 1))
     predictions = model.predict(scaled_data)
     return scaler.inverse_transform(predictions)
+from alpaca_trade_api.rest import TimeFrame
+def fetch_historical_data(self, ticker, start, end, interval):
+    # Convert interval to the appropriate format
+    if interval == '1Day':
+        timeframe = '1Day'
+    else:
+        # Handle other intervals accordingly
+        raise ValueError("Unsupported interval")
+
+    # Fetch data using the get_bars method
+    return self.api.get_bars(ticker, timeframe, start=start, end=end).df[ticker]
+
+
+    # Fetch data using the new method
+    return self.api.get_stock_bars(ticker, timeframe, start=start, end=end).df[ticker]
